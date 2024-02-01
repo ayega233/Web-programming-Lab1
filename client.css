@@ -1,0 +1,73 @@
+body{
+    background-color: deepskyblue;
+}
+
+#welcome-view{
+    width: 600px;
+    height: 400px;
+    background-color: deepskyblue;
+    margin: auto;
+}
+
+#main-left{
+width: 340px;
+height: 400px;
+background-image: url("wimage.png");
+border: solid;
+}
+
+#right-top {
+    width: 250px;
+    height: 80px;
+    margin-left: 350px;
+    margin-top: -404px;
+    background-color: white;
+    border: solid;
+    padding: 3px;
+    
+}
+
+#right-dow {
+    margin-left: 350px;
+    margin-top: 10px;
+    background-color: white;
+    width: 250px;
+    height: 295px;
+    border: solid;
+    padding: 3px;
+}
+
+#right-dow  label {
+    display: inline-block;
+    width: 88px;
+}
+
+#right-dow  input {
+    width: 150px;
+}
+
+#right-top label{
+    float: left;
+    width: 75px;
+}
+
+#right-top form{
+    margin-top: 5px;
+}
+
+form div{
+    padding: 2px;
+}
+
+.button{
+    float: right;
+    padding: 2px;
+    margin-right: 4px;
+    width: 60px !important;
+}
+
+.sign-up{
+    text-align: center;
+    -webkit-text-stroke-width: medium;
+}
+

@@ -3,7 +3,8 @@ displayView = function(){
 };
 
 window.onload = function(){
-  console.log()
+  console.log(localStorage.getItem("loggedinusers"));
+  console.log(localStorage.getItem("users"));
   //code that is executed as the page is loaded.
   //You shall put your own custom code here.
   //window.alert() is not allowed to be used in your implementation.
@@ -25,37 +26,13 @@ function checkpw(){
 function login(formdata){
   var email = formdata.login_email.value;
   var password = formdata.login_password.value;
-  var currentcontacts = JSON.parse(localStorage.getItem("contacts"));
-  var loginstate;
-  if(currentcontacts != null){
-      for(i=0; i< currentcontacts.length; i++){
-        var contact =currentcontacts[i];
-        if(contact.email === email){
-            if(contact.password === password){
-              var loginuser = {
-                email : email,
-                password : password
-              }
-              localStorage.setItem("loginuser",JSON.stringify(loginuser));
-              document.getElementById("save-form").reset();
-              loginstate = true;
-              msg="";
-              break;
-            }else{
-              loginstate =false;
-              msg="User Name and PW is not matching.";
-            }
-        }else{
-          loginstate = false;
-          msg="Please,Sign Up";
-        }
-      }
+  var message = serverstub.signIn(email,password);
+  if(message.success){
+
   }else{
-    loginstate = false;
+    document.getElementById('log-error-message').innerHTML = message.message;
+    document.getElementById('log-error-message').style.color = 'red';
   }
-  localStorage.setItem("loginstate",loginstate);
-  document.getElementById('log-error-message').innerHTML = msg;
-  document.getElementById('log-error-message').style.color = 'red';
 }
 
 function saveContact(formData){
@@ -75,18 +52,16 @@ function saveContact(formData){
       city: city,
       country: country,
       email: email,
-      password: password,
-      repassword:repassword
-
+      password: password
     };
 
-    var contacts = localStorage.getItem("contacts");
-    if (contacts == null){
-      contacts = [];
+    var message = serverstub.signUp(contact);
+    if(message.success){
+      document.getElementById('message').innerHTML = message.message;
+      document.getElementById('message').style.color = 'green';
     }else{
-      contacts = JSON.parse(contacts);
+      document.getElementById('message').innerHTML = message.message;
+      document.getElementById('message').style.color = 'red';
     }
-    contacts.push(contact);
-    localStorage.setItem("contacts",JSON.stringify(contacts));
-    document.getElementById("sign-up-form").reset();
+    
 }
