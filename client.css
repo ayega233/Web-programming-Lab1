@@ -29,7 +29,7 @@ border: solid;
 
 #right-dow {
     margin-left: 350px;
-    margin-top: 10px;
+    margin-top: 5px;
     background-color: white;
     width: 250px;
     height: 295px;
@@ -47,7 +47,6 @@ border: solid;
 }
 
 #right-top label{
-    float: left;
     width: 75px;
 }
 
@@ -60,7 +59,9 @@ form div{
 }
 
 .button{
-    float: right;
+    display: block;
+    margin-top: 5px;
+    margin-left: 30px;
     padding: 2px;
     margin-right: 4px;
     width: 60px !important;
@@ -278,3 +279,14 @@ form div{
         width: 60%;
       }
       
+
+#content{
+  width: 80%;
+    display: block;
+    align-content: center;
+    margin: auto;
+}
+
+#tabs-2{
+  height: 250px;
+}
