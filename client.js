@@ -90,7 +90,12 @@ var already_login = function() {
 
 	if (email_member != null) {
 		document.getElementById('content').innerHTML = document.getElementById('logged_in').innerHTML;
-		document.getElementById("tabs-1").style.display = 'block';
+    var currenttab = localStorage.getItem("currentTab");
+    if(currenttab && currenttab != null){
+      document.getElementById(currenttab).style.display = 'block';
+    }else{
+      document.getElementById("tabs-1").style.display = 'block';
+    }
 		user_data();
 		post_to_wall();
 	}
@@ -106,7 +111,22 @@ var display_tab = function(element)  {
   }
 
   var tabContentIdToShow = element.id.replace(/(\d)/g, '-$1');
+  localStorage.setItem("currentTab",tabContentIdToShow);
   document.getElementById(tabContentIdToShow).style.display = 'block';
+}
+
+function showCurrentTab(){
+  var tabContentIdToShow = localStorage.getItem("currentTab");
+  if(tabContentIdToShow && tabContentIdToShow!=null){
+    var tab_panels = document.getElementsByClassName('tab_panel');
+    for (var i = 0; i < tab_panels.length; i++) {
+        tab_panels[i].style.display = 'none';
+    }
+    document.getElementById(tabContentIdToShow).style.display = 'block';
+  }else{
+
+  }
+
 }
 
 var changing_password = function() {
