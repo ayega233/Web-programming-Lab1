@@ -94,6 +94,7 @@ form div{
         float: right;
         margin-top: 5px;
         margin-bottom: 10px;
+        margin-right: 68px;
       }
       
     #search {
@@ -111,13 +112,10 @@ form div{
         margin-top: 10px;
       }
       
-    #search_button {
-        float: right;
-      }
       
     #search_member {
-        float: right;
-        width: 72.2%;
+        float: left;
+        width: 80.2%;
       }
       
       
@@ -152,7 +150,6 @@ form div{
       
     .tabs .tab_panel {
         height: 92%;
-        background-color: white;
         text-align: center;
         padding-top: 0px;
         box-sizing: border-box;
@@ -289,4 +286,16 @@ form div{
 
 #tabs-2{
   height: 250px;
+  background-color: whitesmoke;
+}
+
+#search {
+  margin-top: 60px;
+  height: 10%;
+  width: 30%;
+}
+
+#search_button {
+  /* float: right; */
+  margin-right: 66px;
 }
