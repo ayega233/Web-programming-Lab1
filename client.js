@@ -125,7 +125,7 @@ function showCurrentTab(){
     }
     document.getElementById(tabContentIdToShow).style.display = 'block';
   }else{
-
+    document.getElementById('content').innerHTML = document.getElementById('welcomeview').innerHTML;
   }
 
 }
@@ -159,79 +159,109 @@ var signOut = function() {
 }
 
 var user_data = function() {
+  document.getElementById("personal-error-msg").innerHTML = "";
+
   token = localStorage.getItem("loginusertocken");
-  getuser_data = localStorage.setItem("getuser_data", JSON.stringify(serverstub.getUserDataByToken(token)));
-  getuser_output = JSON.parse(localStorage.getItem("getuser_data"));
-  document.getElementById("email_output").innerHTML = getuser_output.data.email;
-  document.getElementById("name_output").innerHTML = getuser_output.data.firstname;
-  document.getElementById("familyname_output").innerHTML = getuser_output.data.familyname;
-  document.getElementById("gender_output").innerHTML = getuser_output.data.gender;
-  document.getElementById("city_output").innerHTML = getuser_output.data.city;
-  document.getElementById("country_output").innerHTML = getuser_output.data.country;
+  var getuser_output = serverstub.getUserDataByToken(token);
+
+  if(getuser_output.success){
+    document.getElementById("email_output").innerHTML = getuser_output.data.email;
+    document.getElementById("name_output").innerHTML = getuser_output.data.firstname;
+    document.getElementById("familyname_output").innerHTML = getuser_output.data.familyname;
+    document.getElementById("gender_output").innerHTML = getuser_output.data.gender;
+    document.getElementById("city_output").innerHTML = getuser_output.data.city;
+    document.getElementById("country_output").innerHTML = getuser_output.data.country;
+  }else{
+    document.getElementById("personal-error-msg").innerHTML = getuser_output.message;
+    document.getElementById("search-error").style.color="red";
+  }
+
 }
 
 var user_data_2 = function() {
+    document.getElementById("search-error").innerHTML = "";
     token = localStorage.getItem("loginusertocken");
     email = document.getElementById("search_member").value;
+    document.getElementById("theTextarea").innerHTML = "";
 
-    getuser_data_other = localStorage.setItem("getuser_data_other", JSON.stringify(serverstub.getUserDataByEmail(token,email)));
-    getuser_output_other = JSON.parse(localStorage.getItem("getuser_data_other"));
+    var getuser_output_other = serverstub.getUserDataByEmail(token,email);
 
-    document.getElementById("email_output_2").innerHTML = getuser_output_other.data.email;
-    document.getElementById("name_output_2").innerHTML = getuser_output_other.data.firstname;
-    document.getElementById("familyname_output_2").innerHTML = getuser_output_other.data.familyname;
-    document.getElementById("gender_output_2").innerHTML = getuser_output_other.data.gender;
-    document.getElementById("city_output_2").innerHTML = getuser_output_other.data.city;
-    document.getElementById("country_output_2").innerHTML = getuser_output_other.data.country;
+    if(getuser_output_other.success){
+      document.getElementById("email_output_2").innerHTML = getuser_output_other.data.email;
+      document.getElementById("name_output_2").innerHTML = getuser_output_other.data.firstname;
+      document.getElementById("familyname_output_2").innerHTML = getuser_output_other.data.familyname;
+      document.getElementById("gender_output_2").innerHTML = getuser_output_other.data.gender;
+      document.getElementById("city_output_2").innerHTML = getuser_output_other.data.city;
+      document.getElementById("country_output_2").innerHTML = getuser_output_other.data.country;
+  
+      post_to_wall_2();
+    }else{
+      document.getElementById("search-error").innerHTML = getuser_output_other.message;
+      document.getElementById("search-error").style.color="red";
+    }
 
-    post_to_wall_2();
 }
 
 var post_to_wall = function() {
+  document.getElementById("wall-post-error-1").innerHTML = "";
   token = localStorage.getItem("loginusertocken");
   email = JSON.parse(localStorage.getItem("loggedinusers"))[token];
   message = document.getElementById("wall_thoughts").value;
 
-  wall_data =  localStorage.setItem("wall_data", JSON.stringify(serverstub.postMessage(token, message, email)));
-  wall_output = JSON.parse(localStorage.getItem("wall_data"));
-
-  read_wall();
+  var wall_data = serverstub.postMessage(token, message, email);
+  if(wall_data.success){
+    document.getElementById("wall_thoughts").value="";
+    read_wall();
+  }else{
+    document.getElementById("wall-post-error-1").innerHTML =user_message.message;
+    document.getElementById('wall-post-error-1').style.color="red";
+  }
+ 
 }
 
 var read_wall = function() {
+  document.getElementById("theTextarea").innerHTML = "";
   token = localStorage.getItem("loginusertocken");
+  user_output = serverstub.getUserMessagesByToken(token);
 
-  user_messages = localStorage.setItem("user_messages", JSON.stringify(serverstub.getUserMessagesByToken(token)));
-  user_output = JSON.parse(localStorage.getItem("user_messages"));
-
-  var text = ""
-  for (i = 0; i < user_output.data.length; i++) {
-    if (user_output.data[i].content != "") {
-      text += "<b>" + user_output.data[i].writer + "</b>" + ":" + user_output.data[i].content + "<br><br>";
+  if(user_output.success){
+    var text = ""
+    for (i = 0; i < user_output.data.length; i++) {
+      if (user_output.data[i].content != "") {
+        text += "<b>" + user_output.data[i].writer + "</b>" + ":" + user_output.data[i].content + "<br><br>";
+      }
     }
+  
+    document.getElementById("theTextarea").innerHTML = text;
+  }else{
+    document.getElementById("theTextarea").innerHTML = user_output.message;
+    document.getElementById('theTextarea').style.color="red";
   }
-
-  document.getElementById("theTextarea").innerHTML = text;
 }
 
 var post_to_wall_2 = function() {
+  document.getElementById("wall-post-error").innerHTML ="";
   token = localStorage.getItem("loginusertocken");
-  email = document.getElementById("search_member").value;
-  message = document.getElementById("wall_thoughts_2").value;
+  var email = document.getElementById("search_member").value;
+  var message = document.getElementById("wall_thoughts_2").value;
 
-  wall_data =  localStorage.setItem("wall_data", JSON.stringify(serverstub.postMessage(token, message, email)));
-  wall_output = JSON.parse(localStorage.getItem("wall_data"));
-
-  read_wall_2();
+  var wall_data = serverstub.postMessage(token, message, email);
+  if(wall_data.success){
+    document.getElementById("wall_thoughts_2").value="";
+    read_wall_2();
+  }else{
+    document.getElementById("wall-post-error").innerHTML =user_message.message;
+    document.getElementById('wall-post-error').style.color="red";
+  }
 }
 
 var read_wall_2 = function() {
+  document.getElementById("theTextarea_2").innerHTML ="";
   token = localStorage.getItem("loginusertocken");
-  email = document.getElementById("search_member").value;
+  var email = document.getElementById("search_member").value;
 
   var user_message = serverstub.getUserMessagesByEmail(token, email);
   if(user_message.success){
-    //localStorage.setItem("user_messages",user_message);
     user_output = user_message;
   
     var text = ""
@@ -242,7 +272,8 @@ var read_wall_2 = function() {
     }
     document.getElementById("theTextarea_2").innerHTML = text;
   }else{
-    document.getElementById("theTextarea_2").innerHTML = "No such user.";
+    document.getElementById("theTextarea_2").innerHTML =user_message.message;
+    document.getElementById('wall-post-error').style.color="red";
   }
   
 }

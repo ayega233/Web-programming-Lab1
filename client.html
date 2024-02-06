@@ -58,6 +58,7 @@
             <div id="tabs-1" class="tab_panel">
                 <div id="personal_info" >
                     <h3>Personal Information</h3>
+                    <span id="personal-error-msg"></span>
                     <p><b>Email:</b></p><p id="email_output"></p>
                     <p><b>Name:</b></p><p id="name_output"></p>
                     <p><b>Familyame:</b></p><p id="familyname_output"></p>
@@ -71,6 +72,7 @@
                         <h3>What's on your mind?</h3>
                         <form id="wall_form" onsubmit = "return false">
                             <input type="text" id="wall_thoughts">
+                            <span id="wall-post-error-1"></span>
                             <button id="post_wall" onclick="post_to_wall()">Post</button>
                         </form>
 
@@ -99,6 +101,7 @@
                 <div id="search">
                     <form id="search_form" onsubmit="return false">
                         <input type="text" id="search_member" placeholder="Search Twidder"><br><br>
+                        <span id="search-error"></span>
                         <button type="submit" id="search_button" onclick="user_data_2()">Search</button><br />
                     </form>
                 </div>
@@ -106,15 +109,10 @@
                     <div id="personal_info_2" >
                         <h3>Personal Information</h3>
                         <p><b>Email:</b></p><p id="email_output_2"></p><br>
-
                         <p><b>Name:</b></p><p id="name_output_2"></p><br>
-
                         <p><b>Familyame:</b></p><p id="familyname_output_2"></p><br>
-
                         <p><b>Gender:</b></p><p id="gender_output_2"></p><br>
-
                         <p><b>City:</b></p><p id="city_output_2"></p><br>
-
                         <p><b>Country:</b></p><p id="country_output_2"></p><br>
 
                     </div>
@@ -123,6 +121,7 @@
                             <h3>Write something to your friend</h3>
                             <form id="wall_form_2" onsubmit = "return false">
                                 <input type="text" id="wall_thoughts_2">
+                                <span id="wall-post-error"></span>
                                 <button id="post_wall_2" onclick="post_to_wall_2()">Post</button>
                             </form>
 
