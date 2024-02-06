@@ -40,12 +40,10 @@ function login(formdata){
       element = document.getElementById("tabs1");
       display_tab(element);
     }else{
-      document.getElementById('log-error-message').innerHTML = message.message;
-      document.getElementById('log-error-message').style.color = 'red';
+      document.getElementById('log-error-message').innerHTML = message.message;      
     }
   }else{    
-    document.getElementById('log-error-message').innerHTML ="Please SignUp.";
-    document.getElementById('log-error-message').style.color = 'red';
+    document.getElementById('log-error-message').innerHTML ="Wrong username or password.";
   } 
 }
 
@@ -57,7 +55,7 @@ function saveContact(formData){
     var country = formData.country.value;
     var email = formData.emailsignup.value;
     var password = formData.passwordsignup.value;
-
+  if(firstname!="" && familyname!="" && gender!="" && country!="" && email!="" && validateEmail(email) && password!="" && (password.length>4)){
     var contact ={
       firstname: firstname,
       familyname: familyname,
@@ -77,9 +75,16 @@ function saveContact(formData){
       document.getElementById('message').innerHTML = message.message;
       document.getElementById('message').style.color = 'red';
     }
-    
+  }else{
+    document.getElementById('message').innerHTML = "Please fill mandatory data.";
+    document.getElementById('message').style.color = 'red';
+  }    
 }
 
+function validateEmail(email) {
+  var re = /\S+@\S+\.\S+/;
+  return re.test(email);
+}
 
 var already_login = function() {
   token =  localStorage.getItem("loginusertocken");
@@ -202,25 +207,34 @@ var user_data_2 = function() {
 
 }
 
-var post_to_wall = function() {
+var post_to_wall = function(status=false) {
   document.getElementById("wall-post-error-1").innerHTML = "";
   token = localStorage.getItem("loginusertocken");
   email = JSON.parse(localStorage.getItem("loggedinusers"))[token];
   message = document.getElementById("wall_thoughts").value;
 
-  var wall_data = serverstub.postMessage(token, message, email);
-  if(wall_data.success){
-    document.getElementById("wall_thoughts").value="";
-    read_wall();
-  }else{
-    document.getElementById("wall-post-error-1").innerHTML =user_message.message;
+  if(status && message==""){
+    document.getElementById("wall-post-error-1").innerHTML ="Please type a message.";
     document.getElementById('wall-post-error-1').style.color="red";
+    
+  }else{
+    var wall_data = serverstub.postMessage(token, message, email);
+    if(wall_data.success){
+      document.getElementById("wall_thoughts").value="";
+      read_wall();
+    }else{
+      document.getElementById("wall-post-error-1").innerHTML =user_message.message;
+      document.getElementById('wall-post-error-1').style.color="red";
+    }
   }
+
  
 }
 
 var read_wall = function() {
   document.getElementById("theTextarea").innerHTML = "";
+  document.getElementById("wall-post-error-1").innerHTML ="";
+
   token = localStorage.getItem("loginusertocken");
   user_output = serverstub.getUserMessagesByToken(token);
 
@@ -231,7 +245,6 @@ var read_wall = function() {
         text += "<b>" + user_output.data[i].writer + "</b>" + ":" + user_output.data[i].content + "<br><br>";
       }
     }
-  
     document.getElementById("theTextarea").innerHTML = text;
   }else{
     document.getElementById("theTextarea").innerHTML = user_output.message;
@@ -245,18 +258,25 @@ var post_to_wall_2 = function() {
   var email = document.getElementById("search_member").value;
   var message = document.getElementById("wall_thoughts_2").value;
 
-  var wall_data = serverstub.postMessage(token, message, email);
-  if(wall_data.success){
-    document.getElementById("wall_thoughts_2").value="";
-    read_wall_2();
+  if(message!=""){
+    var wall_data = serverstub.postMessage(token, message, email);
+    if(wall_data.success){
+      document.getElementById("wall_thoughts_2").value="";
+      read_wall_2();
+    }else{
+      document.getElementById("wall-post-error").innerHTML =wall_data.message;
+      document.getElementById('wall-post-error').style.color="red";
+    }
   }else{
-    document.getElementById("wall-post-error").innerHTML =user_message.message;
+    document.getElementById("wall-post-error").innerHTML ="Please type a message.";
     document.getElementById('wall-post-error').style.color="red";
   }
+
 }
 
 var read_wall_2 = function() {
   document.getElementById("theTextarea_2").innerHTML ="";
+  document.getElementById("wall-post-error").innerHTML ="";
   token = localStorage.getItem("loginusertocken");
   var email = document.getElementById("search_member").value;
 
@@ -272,8 +292,8 @@ var read_wall_2 = function() {
     }
     document.getElementById("theTextarea_2").innerHTML = text;
   }else{
-    document.getElementById("theTextarea_2").innerHTML =user_message.message;
-    document.getElementById('wall-post-error').style.color="red";
+    document.getElementById("theTextarea_2").innerHTML ="";
+    
   }
   
 }
