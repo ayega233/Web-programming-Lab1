@@ -70,6 +70,7 @@ function saveContact(formData){
 
     var message = serverstub.signUp(contact);
     if(message.success){
+      document.getElementById("sign-up-form").reset();
       document.getElementById('message').innerHTML = message.message;
       document.getElementById('message').style.color = 'green';
     }else{
@@ -218,7 +219,6 @@ var post_to_wall_2 = function() {
   email = document.getElementById("search_member").value;
   message = document.getElementById("wall_thoughts_2").value;
 
-
   wall_data =  localStorage.setItem("wall_data", JSON.stringify(serverstub.postMessage(token, message, email)));
   wall_output = JSON.parse(localStorage.getItem("wall_data"));
 
@@ -229,15 +229,20 @@ var read_wall_2 = function() {
   token = localStorage.getItem("loginusertocken");
   email = document.getElementById("search_member").value;
 
-  user_messages = localStorage.setItem("user_messages", JSON.stringify(serverstub.getUserMessagesByEmail(token, email)));
-  user_output = JSON.parse(localStorage.getItem("user_messages"));
-
-  var text = ""
-  for (i = 0; i < user_output.data.length; i++) {
-    if (user_output.data[i].content != "") {
-      text += "<b>" + user_output.data[i].writer + "</b>" + ":" + user_output.data[i].content + "<br><br>";
+  var user_message = serverstub.getUserMessagesByEmail(token, email);
+  if(user_message.success){
+    //localStorage.setItem("user_messages",user_message);
+    user_output = user_message;
+  
+    var text = ""
+    for (i = 0; i < user_output.data.length; i++) {
+      if (user_output.data[i].content != "") {
+        text += "<b>" + user_output.data[i].writer + "</b>" + ":" + user_output.data[i].content + "<br><br>";
+      }
     }
+    document.getElementById("theTextarea_2").innerHTML = text;
+  }else{
+    document.getElementById("theTextarea_2").innerHTML = "No such user.";
   }
-
-  document.getElementById("theTextarea_2").innerHTML = text;
+  
 }
