@@ -310,3 +310,7 @@ select {
   width: 156px;
   margin-left: -3px;
 }
+
+.activeBtn {
+  background-color: #313431;
+}
