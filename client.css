@@ -312,5 +312,6 @@ select {
 }
 
 .activeBtn {
-  background-color: #313431;
+  background-color: #d7d4d4;
+  border: revert;
 }

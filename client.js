@@ -96,12 +96,13 @@ var already_login = function() {
 
 	if (email_member != null) {
 		document.getElementById('content').innerHTML = document.getElementById('logged_in').innerHTML;
-    var currenttab = localStorage.getItem("currentTab");
+    showCurrentTab();
+   /** var currenttab = localStorage.getItem("currentTab");
     if(currenttab && currenttab != null){
       document.getElementById(currenttab).style.display = 'block';
     }else{
       document.getElementById("tabs-1").style.display = 'block';
-    }
+    } */
 		user_data();
 		post_to_wall();
 	}
@@ -114,8 +115,12 @@ var display_tab = function(element)  {
   var tab_panels = document.getElementsByClassName('tab_panel');
   for (var i = 0; i < tab_panels.length; i++) {
       tab_panels[i].style.display = 'none';
+     if( document.getElementById("tabs"+(i+1)).classList.contains("activeBtn")){
+        document.getElementById("tabs"+(i+1)).classList.remove("activeBtn");
+      } 
   }
 
+  document.getElementById(element.id).classList.add("activeBtn");
   var tabContentIdToShow = element.id.replace(/(\d)/g, '-$1');
   localStorage.setItem("currentTab",tabContentIdToShow);
   document.getElementById(tabContentIdToShow).style.display = 'block';
@@ -127,10 +132,16 @@ function showCurrentTab(){
     var tab_panels = document.getElementsByClassName('tab_panel');
     for (var i = 0; i < tab_panels.length; i++) {
         tab_panels[i].style.display = 'none';
+        if(document.getElementById("tabs"+(i+1)).classList.contains("activeBtn")){
+          document.getElementById("tabs"+(i+1)).classList.remove("activeBtn");
+        }
     }
+    var tabbuttonid = tabContentIdToShow.replace("-","")
+    document.getElementById(tabbuttonid).classList.add("activeBtn");
     document.getElementById(tabContentIdToShow).style.display = 'block';
   }else{
     document.getElementById('content').innerHTML = document.getElementById('welcomeview').innerHTML;
+    document.getElementById("tabs1").classList.add("activeBtn");
   }
 
 }
