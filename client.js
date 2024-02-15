@@ -96,13 +96,13 @@ var already_login = function() {
 
 	if (email_member != null) {
 		document.getElementById('content').innerHTML = document.getElementById('logged_in').innerHTML;
-    showCurrentTab();
-   /** var currenttab = localStorage.getItem("currentTab");
+    //showCurrentTab();
+    var currenttab = localStorage.getItem("currentTab");
     if(currenttab && currenttab != null){
       document.getElementById(currenttab).style.display = 'block';
     }else{
       document.getElementById("tabs-1").style.display = 'block';
-    } */
+    }
 		user_data();
 		post_to_wall();
 	}
@@ -119,8 +119,10 @@ var display_tab = function(element)  {
         document.getElementById("tabs"+(i+1)).classList.remove("activeBtn");
       } 
   }
-
-  document.getElementById(element.id).classList.add("activeBtn");
+  if(document.getElementById(element.id)){
+    document.getElementById(element.id).classList.add("activeBtn");
+  }
+  
   var tabContentIdToShow = element.id.replace(/(\d)/g, '-$1');
   localStorage.setItem("currentTab",tabContentIdToShow);
   document.getElementById(tabContentIdToShow).style.display = 'block';
@@ -137,11 +139,16 @@ function showCurrentTab(){
         }
     }
     var tabbuttonid = tabContentIdToShow.replace("-","")
-    document.getElementById(tabbuttonid).classList.add("activeBtn");
+    if(document.getElementById(tabbuttonid)){
+      document.getElementById(tabbuttonid).classList.add("activeBtn");
+    }
     document.getElementById(tabContentIdToShow).style.display = 'block';
   }else{
     document.getElementById('content').innerHTML = document.getElementById('welcomeview').innerHTML;
-    document.getElementById("tabs1").classList.add("activeBtn");
+    if(document.getElementById("tabs1")){
+      document.getElementById("tabs1").classList.add("activeBtn");
+    }
+    
   }
 
 }
@@ -175,6 +182,7 @@ var signOut = function() {
 }
 
 var user_data = function() {
+  if(document.getElementById("personal-error-msg"))
   document.getElementById("personal-error-msg").innerHTML = "";
 
   token = localStorage.getItem("loginusertocken");
